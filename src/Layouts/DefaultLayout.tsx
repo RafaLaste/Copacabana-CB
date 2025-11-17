@@ -256,7 +256,7 @@ export default function DefaultLayout({
                     <div className="container max-w-x-large">
                         <div className="relative">
                             <div className="md:absolute md:top-10 xl:top-4 md:bottom-8 xl:bottom-1">
-                                <img src={logo} alt="Logo" className="max-md:mx-auto max-sm:max-w-30 max-md:max-w-40 h-full" />
+                                <img src={logo} alt="Logo" className="max-md:mx-auto max-sm:max-w-30 max-md:max-w-40" />
                             </div>
                             
                             <div className="md:ml-40 xl:ml-56 mb-1 py-8 flex max-md:flex-col gap-6 sm:gap-10 md:gap-20 md:items-end border-b border-b-white border-opacity-30">
