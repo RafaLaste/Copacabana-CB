@@ -1,6 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import type { ImageHighlight } from "../Types/ImageHighlight";
+
+type ImageHighlight = {
+    img: string;
+    ambiente?: string;
+};
 
 type SlidesHorizontalLoopProps = {
     images: ImageHighlight[];
@@ -13,48 +17,89 @@ export const SlidesHorizontalLoop: React.FC<SlidesHorizontalLoopProps> = ({
     direction = "right",
     // onImageClick,
 }) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const timelineRef = useRef<gsap.core.Timeline | null>(null);
+    const uniqueId = useRef(`gallery-${Math.random().toString(36).substr(2, 9)}`);
+    
     const gallery = Array(2)
         .fill(null)
         .map(() => [...images]);
 
     useEffect(() => {
-        const loop = horizontalLoop(`.gallery-${direction}`, {
-            speed: 0.6,
-            repeat: -1,
-        });
+        const timer = setTimeout(() => {
+            if (!containerRef.current) return;
 
-        gsap.to(loop, {
-            timeScale: direction === "right" ? 1 : -1,
-            overwrite: true,
-        });
-
-        const setDirection = (value: number) => {
-            if ((loop as any).direction !== value) {
-                gsap.to(loop, {
-                    timeScale: direction === "right" ? value : value * -1,
-                    overwrite: true,
-                });
-                (loop as any).direction = value;
+            if (timelineRef.current) {
+                timelineRef.current.kill();
+                timelineRef.current = null;
             }
-        };
 
-        const handleScroll = (e: WheelEvent) => {
-            if (e.deltaY > 0) {
-                setDirection(1);
-            } else {
-                setDirection(-1);
-            }
-        };
+            const items = containerRef.current.querySelectorAll(`.${uniqueId.current}`);
+            
+            if (items.length === 0) return;
 
-        window.addEventListener("wheel", handleScroll);
+            gsap.killTweensOf(items);
+            gsap.set(items, { clearProps: "all" });
+
+            const loop = horizontalLoop(items, {
+                speed: 0.6,
+                repeat: -1,
+            });
+
+            timelineRef.current = loop;
+
+            gsap.to(loop, {
+                timeScale: direction === "right" ? 1 : -1,
+                overwrite: true,
+            });
+
+            const setDirection = (value: number) => {
+                if (!loop) return;
+                if ((loop as any).direction !== value) {
+                    gsap.to(loop, {
+                        timeScale: direction === "right" ? value : value * -1,
+                        overwrite: true,
+                    });
+                    (loop as any).direction = value;
+                }
+            };
+
+            const handleScroll = (e: WheelEvent) => {
+                if (e.deltaY > 0) {
+                    setDirection(1);
+                } else {
+                    setDirection(-1);
+                }
+            };
+
+            window.addEventListener("wheel", handleScroll, { passive: true });
+
+            return () => {
+                window.removeEventListener("wheel", handleScroll);
+                if (timelineRef.current) {
+                    timelineRef.current.pause();
+                    timelineRef.current.kill();
+                    timelineRef.current = null;
+                }
+                if (items.length > 0) {
+                    gsap.killTweensOf(items);
+                    gsap.set(items, { clearProps: "all" });
+                }
+            };
+        }, 50);
 
         return () => {
-            window.removeEventListener("wheel", handleScroll);
+            clearTimeout(timer);
         };
     }, [direction]);
 
-    function horizontalLoop(items: string | Element[] | NodeListOf<Element>, config: any) {
-        const elements = gsap.utils.toArray(items) as HTMLElement[];
+    function horizontalLoop(items: Element[] | NodeListOf<Element>, config: any) {
+        const elements = Array.from(items) as HTMLElement[];
+        
+        if (elements.length === 0) {
+            return gsap.timeline();
+        }
+        
         config = config || {};
 
         const tl = gsap.timeline({
@@ -163,46 +208,21 @@ export const SlidesHorizontalLoop: React.FC<SlidesHorizontalLoopProps> = ({
         return tl;
     }
 
-    // const handleImageClick = (imageIndex: number) => {
-    //     onImageClick?.(imageIndex);
-    // };
-
     return (
-        <div className="overflow-hidden relative z-[1]">
+        <div ref={containerRef} className="overflow-hidden relative z-[1]">
             <div className="flex w-max">
                 {gallery.map((item, index) => (
-                    <div key={index} className={`gallery-${direction} flex whitespace-nowrap`}>
+                    <div key={`${uniqueId.current}-${index}`} className={`${uniqueId.current} flex whitespace-nowrap`}>
                         {item.map((image, subIndex) => (
                             <div
                                 key={subIndex}
                                 className="mx-2 md:mx-3 2xl:mx-4 group overflow-hidden rounded-[2rem] relative"
-                                // onClick={() => handleImageClick(subIndex)}
                             >
                                 <img
                                     src={`/copacabana/content/highlights/${image.img}`}
                                     alt={image.ambiente || `Slide ${index + 1}`}
                                     className="h-[250px] sm:h-[350px] md:h-[400px] lg:h-[500px] 2xl:h-[580px] object-cover"
                                 />
-
-                                {/* <div className="absolute inset-0 bg-black opacity-0 transition-all duration-300 group-hover:opacity-50" />
-
-                                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover:opacity-100 z-10">
-                                    <div className="bg-white bg-opacity-80 rounded-full p-3 shadow-lg">
-                                        <svg
-                                            className="w-6 h-6 text-gray-700"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={1}
-                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-                                            />
-                                        </svg>
-                                    </div>
-                                </div> */}
                             </div>
                         ))}
                     </div>
