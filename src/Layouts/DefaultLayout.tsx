@@ -166,11 +166,11 @@ export default function DefaultLayout({
                         <div className="relative z-[1] flex items-center justify-between w-full h-24 md:h-32 xl:h-40 2xl:h-44">
                             <h1 className="absolute top-3 md:top-6 xl:top-10 bottom-2 md:bottom-0 xl:bottom-8 z-[2]">
                                 <Link to="/" className="">
-                                    <img src={logo} alt="Logo" className="block h-full" />
+                                    <img src={logo} alt="Logo" className="block h-full" alt="Casa Brasileira Logo" />
                                 </Link>
                             </h1>
 
-                            <button className={`fixed z-[2] top-0 left-0 w-screen h-screen lg:hidden bg-black transition-all  ${isMenuOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'}`} onClick={() => setIsMenuOpen(false)} />
+                            <button className={`fixed z-[2] top-0 left-0 w-screen h-screen lg:hidden bg-black transition-all  ${isMenuOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'}`} onClick={() => setIsMenuOpen(false)} aria-label="Overlay Menu" />
 
                             <div className={`fixed z-[2] lg:relative bg-primary bg-opacity-70 max-lg:backdrop-blur-sm lg:bg-transparent lg:ml-auto top-0 left-0 right-0 ${!isMenuOpen ? '-translate-y-[101%] lg:translate-y-0' : 'translate-y-0'} lg:left-auto lg:top-auto flex flex-col lg:flex-row lg:items-center justify-center lg:justify-end w-full h-[50vh] lg:h-auto lg:my-0.5 2xl:my-1.5 transition-all ease-out duration-500`}>
                                 <nav className="relative max-md:mt-[10vh]">
@@ -183,6 +183,7 @@ export default function DefaultLayout({
                                                         className="max-md:text-xl text-white transition-all hover:opacity-80"
                                                         target="_blank"
                                                         rel="noopener noreferrer"
+                                                        aria-label={item.name}
                                                     >
                                                         {item.name}
                                                     </a>
@@ -191,6 +192,7 @@ export default function DefaultLayout({
                                                         to={item.hash ? `${item.url}#${item.hash}` : item.url}
                                                         className="max-md:text-xl text-white transition-all hover:opacity-80"
                                                         onClick={() => setIsMenuOpen(false)}
+                                                        aria-label={item.name}
                                                     >
                                                         {item.name}
                                                     </Link>
@@ -203,6 +205,7 @@ export default function DefaultLayout({
                                                 href="https://casabrasileiraplanejados.com.br/solicite-seu-projeto"
                                                 target="_blank"
                                                 className="max-lg:block text-white lg:text-sm xl:text-base 2xl:text-lg border-2 hover:border-white rounded-xl px-3 xl:px-6 py-1.5 font-semibold uppercase transition-all hover:bg-primary hover:border-primary"
+                                                aria-label="Solicite seu projeto"
                                             >
                                                 Solicite seu projeto
                                             </a>
@@ -215,7 +218,7 @@ export default function DefaultLayout({
                                 <img src={whiteStamp} alt="Selo" />
                             </div>
 
-                            <button className="lg:hidden relative ml-10 z-[2]" onClick={toggleMenu}>
+                            <button className="lg:hidden relative ml-10 z-[2]" onClick={toggleMenu} aria-label="Abrir Menu">
                                 <div className="flex items-center">
                                     <div className="relative w-8 h-[21px]">
                                         <div
@@ -256,7 +259,7 @@ export default function DefaultLayout({
                     <div className="container max-w-x-large">
                         <div className="relative">
                             <div className="md:absolute md:top-10 xl:top-4 md:bottom-8 xl:bottom-1">
-                                <img src={logo} alt="Logo" className="max-md:mx-auto max-sm:max-w-30 max-md:max-w-40 md:h-full" />
+                                <img src={logo} alt="Logo" className="max-md:mx-auto max-sm:max-w-30 max-md:max-w-40 md:h-full" alt="Casa Brasileira Logo" />
                             </div>
                             
                             <div className="md:ml-40 xl:ml-56 mb-1 py-8 flex max-md:flex-col gap-6 sm:gap-10 md:gap-20 md:items-end border-b border-b-white border-opacity-30">
@@ -264,17 +267,16 @@ export default function DefaultLayout({
                                 <nav className="">
                                     <ul className="flex max-lg:flex-wrap justify-evenly gap-y-4 gap-x-6 sm:gap-x-4 md:gap-x-14 lg:gap-10">
                                         {menuItems.map((item, index) => (
-
-                                        <li key={index}>
-                                            <Link to={item.hash ? `${item.url}#${item.hash}` : item.url} className="block font-secondary text-white leading-none transition-all opacity-70 hover:opacity-100">{item.name}</Link>
-                                        </li>
+                                            <li key={index}>
+                                                <Link to={item.hash ? `${item.url}#${item.hash}` : item.url} className="block font-secondary text-white leading-none transition-all opacity-70 hover:opacity-100" aria-label={item.name}>{item.name}</Link>
+                                            </li>
                                         ))}
                                     </ul>
                                 </nav>
 
                                 <ul className="flex gap-2 max-md:mx-auto md:ml-auto -mb-2">
-                                    <li><a href="https://www.facebook.com/casabrasileiraoficial" target="_blank" rel="noopener noreferrer" className="transition-all opacity-100 hover:opacity-70"><img src={facebookLogo} alt="facebook" /></a></li>
-                                    <li><a href="https://www.instagram.com/casabrasileiraoficial" target="_blank" rel="noopener noreferrer" className="transition-all opacity-100 hover:opacity-70"><img src={instagramLogo} alt="instagram" /></a></li>
+                                    <li><a href="https://www.facebook.com/casabrasileiraoficial" target="_blank" rel="noopener noreferrer" className="transition-all opacity-100 hover:opacity-70" aria-label="Facebook"><img src={facebookLogo} alt="facebook" /></a></li>
+                                    <li><a href="https://www.instagram.com/casabrasileiraoficial" target="_blank" rel="noopener noreferrer" className="transition-all opacity-100 hover:opacity-70" aria-label="Instagram"><img src={instagramLogo} alt="instagram" /></a></li>
                                 </ul>
                             </div>
                             
@@ -298,7 +300,7 @@ export default function DefaultLayout({
                                 
                                 <div className="flex items-center ml-auto max-md:mr-auto max-md:mt-8 gap-4">
                                     <span className="text-white text-xs opacity-70">Desenvolvido por: </span>
-                                    <img src={oitoPorOitoLogo} className="opacity-50" />
+                                    <img src={oitoPorOitoLogo} className="opacity-50" alt="Created by 8poroito" />
                                 </div>
                             </div>
                         </div>
