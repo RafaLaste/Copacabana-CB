@@ -166,7 +166,7 @@ export default function DefaultLayout({
                         <div className="relative z-[1] flex items-center justify-between w-full h-24 md:h-32 xl:h-40 2xl:h-44">
                             <h1 className="absolute top-3 md:top-6 xl:top-10 bottom-2 md:bottom-0 xl:bottom-8 z-[2]">
                                 <Link to="/" className="">
-                                    <img src={logo} alt="Logo" className="block h-full" alt="Casa Brasileira Logo" />
+                                    <img src={logo} className="block h-full" alt="Casa Brasileira Logo" />
                                 </Link>
                             </h1>
 
@@ -259,7 +259,7 @@ export default function DefaultLayout({
                     <div className="container max-w-x-large">
                         <div className="relative">
                             <div className="md:absolute md:top-10 xl:top-4 md:bottom-8 xl:bottom-1">
-                                <img src={logo} alt="Logo" className="max-md:mx-auto max-sm:max-w-30 max-md:max-w-40 md:h-full" alt="Casa Brasileira Logo" />
+                                <img src={logo} className="max-md:mx-auto max-sm:max-w-30 max-md:max-w-40 md:h-full" alt="Casa Brasileira Logo" />
                             </div>
                             
                             <div className="md:ml-40 xl:ml-56 mb-1 py-8 flex max-md:flex-col gap-6 sm:gap-10 md:gap-20 md:items-end border-b border-b-white border-opacity-30">
